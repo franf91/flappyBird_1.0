@@ -18,13 +18,20 @@
  background-color:skyblue;
  position:relative;
 }
+.bird{
+    height:30px;
+    width:30px;
+    position:absolute;
+    background-color: black;
+    top:50%;
+    left:25%;
+}
 .game-top-tube1, .game-bottom-tube1, .game-top-tube2,.game-bottom-tube2 {
   position:absolute;
   height:250px;
   width:100px;
   background-image: linear-gradient(to right,green 0px,transparent 0px);
   
-  border:1px solid red;
 }
 .game-top-tube1, .game-bottom-tube1{
     transform:translateX(480px);
