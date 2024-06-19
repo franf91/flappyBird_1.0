@@ -43,6 +43,34 @@ export function TubeMovement(topTube,bottomTube,transform,distance,i){
 
 }
 
+export function TubeCollision(topTube,bottomTube,bird){
+   let birdCenterX = CenterX(bird);
+   let birdCenterY = CenterY(bird);
+
+   let topTubeCenterX = CenterX(topTube);
+   let topTubeCenterY = CenterY(topTube);
+
+   let bottomTubeCenterX = CenterX(bottomTube);
+   let bottomTubeCenterY = CenterY(bottomTube);
+
+   let upperX = Width(bird)/2 + Width(topTube)/2
+   let upperY = Height(bird)/2 + Height(topTube)/2
+
+   let lowerX = Width(bird)/2 + Width(bottomTube)/2
+   let lowerY = Height(bird)/2 + Height(bottomTube)/2
+
+   if(Math.abs(birdCenterX - topTubeCenterX) <= upperX && Math.abs(birdCenterY - topTubeCenterY) <= upperY ){
+        return true;
+   }
+
+   if(Math.abs(birdCenterX-bottomTubeCenterX) <= lowerX && Math.abs(birdCenterY-bottomTubeCenterY) <= lowerY){
+    return true;
+   }
+
+   return false;
+
+}
+
 function TubeBackgroundColor(topTube,bottomTube,newGradient){
     topTube.style.background = newGradient;
     bottomTube.style.background = newGradient;
@@ -58,6 +86,28 @@ function setTubeTranslateX(topTube,bottomTube,transform){
     bottomTube.style.transform = `translateX(${transform.value}px)`;
 }
 
+ function CenterX(item){
+   return Left(item) + Width(item)/2
+}
 
+ function CenterY(item){
+    return Top(item) + Height(item)/2
+}
+
+ function Top(item){
+    return item.getBoundingClientRect().top 
+}
+
+ function Left(item){
+    return item.getBoundingClientRect().left
+}
+
+ function Height(item){
+return item.getBoundingClientRect().height
+}
+
+ function Width(item){
+    return item.getBoundingClientRect().width
+}
 
 
