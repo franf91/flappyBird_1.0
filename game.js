@@ -1,4 +1,4 @@
-import {TubeMovement} from "./tube.js"
+import {TubeMovement,TubeCollision} from "./tube.js"
 import { BirdMovement } from "./bird.js";
 import { Gravity } from "./gravity.js";
 
@@ -16,7 +16,9 @@ let distance = 1;
 let distance2 = 40
 let distance3 = 2;
 let i = {value:1};
-
+let tubeAminationId;
+let birdAnimationId;
+let gameEnd = false;
 
 
 
@@ -26,16 +28,26 @@ function TubeSlide(){
 
     TubeMovement(topTube2,bottomTube2,transform2,distance,i);
 
+    if(TubeCollision(topTube1,bottomTube1,bird) || TubeCollision(topTube2,bottomTube2,bird) ){
+        gameEnd = true;
+    }
 
+    
 
-    requestAnimationFrame(TubeSlide);
+    tubeAminationId = requestAnimationFrame(TubeSlide);
+
+    if(gameEnd) cancelAnimationFrame(tubeAminationId);
+    
 }
 
 requestAnimationFrame(TubeSlide);
 
 function GameGravity(){
 
-    Gravity(bird,transform3,distance3)
+    if(Gravity(bird,transform3,distance3)) gameEnd = true;
+
+    if(gameEnd) sky.removeEventListener("click",handleSkyClick);
+   
 
     requestAnimationFrame(GameGravity);
 }
@@ -43,14 +55,16 @@ function GameGravity(){
 requestAnimationFrame(GameGravity);
 
 function BirdFly(){
-    BirdMovement(bird,transform3,distance2);
+    BirdMovement(bird,transform3,distance2);    
 }
 
+function handleSkyClick(){
+    birdAnimationId = requestAnimationFrame(BirdFly);
+}
 
-sky.addEventListener("click",()=>{
-    requestAnimationFrame(BirdFly);
-})
-requestAnimationFrame(BirdFly);
+sky.addEventListener("click",handleSkyClick);
+
+requestAnimationFrame(handleSkyClick);
 
 
 
