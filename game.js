@@ -3,6 +3,7 @@ import { BirdMovement } from "./bird.js";
 import { Gravity } from "./gravity.js";
 
 const sky = document.getElementById("sky");
+const gameMenu = document.getElementById("game-menu");
 const bird = document.getElementById("bird");
 const topTube1 = document.getElementById("top-tube1");
 const bottomTube1 = document.getElementById("bottom-tube1");
@@ -21,50 +22,81 @@ let birdAnimationId;
 let gameEnd = false;
 
 
+if(!gameEnd){
+    GameStart(); 
+}
 
-function TubeSlide(){
+function GameStart(){
 
-    TubeMovement(topTube1,bottomTube1,transform1,distance,i);
+    
 
-    TubeMovement(topTube2,bottomTube2,transform2,distance,i);
+    function TubeSlide(){
 
-    if(TubeCollision(topTube1,bottomTube1,bird) || TubeCollision(topTube2,bottomTube2,bird) ){
-        gameEnd = true;
+        TubeMovement(topTube1,bottomTube1,transform1,distance,i);
+    
+        TubeMovement(topTube2,bottomTube2,transform2,distance,i);
+    
+        if(TubeCollision(topTube1,bottomTube1,bird) || TubeCollision(topTube2,bottomTube2,bird) ){
+            gameEnd = true;
+            ChangeGameDisplay(bird,topTube1,bottomTube1,topTube2,bottomTube2,gameMenu,"none","block");
+        }
+    
+        
+    
+        tubeAminationId = requestAnimationFrame(TubeSlide);
+    
+        if(gameEnd) cancelAnimationFrame(tubeAminationId);
+        
     }
-
     
-
-    tubeAminationId = requestAnimationFrame(TubeSlide);
-
-    if(gameEnd) cancelAnimationFrame(tubeAminationId);
+    requestAnimationFrame(TubeSlide);
     
-}
-
-requestAnimationFrame(TubeSlide);
-
-function GameGravity(){
-
-    if(Gravity(bird,transform3,distance3)) gameEnd = true;
-
-    if(gameEnd) sky.removeEventListener("click",handleSkyClick);
-   
-
+    function GameGravity(){
+    
+        if(Gravity(bird,transform3,distance3)) gameEnd = true;
+    
+        if(gameEnd){
+            ChangeGameDisplay(bird,topTube1,bottomTube1,topTube2,bottomTube2,gameMenu,"none","block");
+            sky.removeEventListener("click",handleSkyClick);
+        }
+             
+       
+    
+        requestAnimationFrame(GameGravity);
+    }
+    
     requestAnimationFrame(GameGravity);
+    
+    function BirdFly(){
+        BirdMovement(bird,transform3,distance2);    
+    }
+    
+    function handleSkyClick(){
+        birdAnimationId = requestAnimationFrame(BirdFly);
+    }
+    
+    sky.addEventListener("click",handleSkyClick);
+    
+    requestAnimationFrame(handleSkyClick);
+
 }
 
-requestAnimationFrame(GameGravity);
-
-function BirdFly(){
-    BirdMovement(bird,transform3,distance2);    
+function ChangeGameDisplay (bird,topTube1,bottomTube1,topTube2,bottomTube2,gameMenu,display1,display2){
+    bird.style.display = `${display1}`;
+    topTube1.style.display =`${display1}` ;
+    bottomTube1.style.display = `${display1}`;
+    topTube2.style.display = `${display1}`;
+    bottomTube2.style.display = `${display1}`;
+    gameMenu.style.display = `${display2}`;
 }
 
-function handleSkyClick(){
-    birdAnimationId = requestAnimationFrame(BirdFly);
+function GameStartAgain(){
+    location.reload(); 
 }
 
-sky.addEventListener("click",handleSkyClick);
+gameMenu.addEventListener("click",GameStartAgain);
 
-requestAnimationFrame(handleSkyClick);
+
 
 
 

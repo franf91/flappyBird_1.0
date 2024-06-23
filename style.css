@@ -18,6 +18,20 @@
  background-color:skyblue;
  position:relative;
 }
+.play-again{
+    display:none;
+    cursor: pointer;
+    position:absolute;
+    top:50%;
+    left:35%;
+    border-radius: 8px;
+    border:2px solid green;
+    padding:16px;
+    font-size:24px;
+}
+.play-again:hover{
+    background:lightgreen;
+}
 .bird{
     height:30px;
     width:30px;
